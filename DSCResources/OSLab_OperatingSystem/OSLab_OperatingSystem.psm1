@@ -2,13 +2,15 @@ Configuration OSLab_OperatingSystem
 {
     param
     (
-        [string]$WallpaperPath,
-        [string]$DefaultAppAssociationsPath,
-        [boolean]$EnableAutoLogon,
+        [string]$WallpaperPath = $null,
+        [string]$DefaultAppAssociationsPath = $null,
+        [boolean]$EnableAutoLogon = $false,
         [pscredential]$AutoLogonCredential,
-        [boolean]$DisableEdgePasswordManager,
-        [string]$SplashScreenTaskPath,
-        [string]$AutoLoadClientTaskPath
+        [boolean]$DisableEdgePasswordManager = $false,
+        [string]$SplashScreenTaskPath = $null,
+        [string]$AutoLoadClientTaskPath = $null,
+        [string]$Culture = $null,
+        [boolean]$EnsureSshServer = $false
     )
 
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
@@ -75,9 +77,10 @@ Configuration OSLab_OperatingSystem
         ScheduledTask 'ShowLabSplashScreen'
         {
             TaskName   = 'ShowLabSplashScreen'
-            ActionPath = $SplashScreenTaskPath
-            Trigger    = 'AtLogOn'
+            Action     = New-ScheduledTaskAction -Execute $SplashScreenTaskPath
+            Trigger    = New-ScheduledTaskTrigger -AtLogOn
             State      = 'Enabled'
+            Ensure     = 'Present'
         }
     }
 
@@ -85,9 +88,27 @@ Configuration OSLab_OperatingSystem
         ScheduledTask 'AutoLoadOSClient'
         {
             TaskName   = 'AutoLoadOSClient'
-            ActionPath = $AutoLoadClientTaskPath
-            Trigger    = 'AtLogOn'
+            Action     = New-ScheduledTaskAction -Execute $AutoLoadClientTaskPath
+            Trigger    = New-ScheduledTaskTrigger -AtLogOn
             State      = 'Enabled'
+            Ensure     = 'Present'
+        }
+    }
+
+    if ($Culture) {
+        Script 'SetSystemCulture'
+        {
+            GetScript  = { @{ Result = (Get-Culture).Name } }
+            SetScript  = { Set-Culture $using:Culture }
+            TestScript = { (Get-Culture).Name -eq $using:Culture }
+        }
+    }
+
+    if ($EnsureSshServer) {
+        WindowsCapability 'OpenSSHServer'
+        {
+            Name   = 'OpenSSH.Server~~~~0.0.1.0'
+            Ensure = 'Present'
         }
     }
 }

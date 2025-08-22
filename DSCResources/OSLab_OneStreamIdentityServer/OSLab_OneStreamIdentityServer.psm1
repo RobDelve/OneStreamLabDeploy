@@ -2,25 +2,24 @@ Configuration OSLab_OneStreamIdentityServer
 {
     param
     (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [string]$ZipSourcePath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [string]$InstallPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [string]$AppPoolName,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [uint32]$HttpPort,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [uint32]$HttpsPort,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [hashtable]$AppSettings,
 
-        [Parameter(Mandatory = $false)]
         [string]$CertificateFriendlyName = 'OneStream Identity Server Self-Signed',
 
         [Parameter(Mandatory = $false)]
@@ -31,7 +30,7 @@ Configuration OSLab_OneStreamIdentityServer
     # Import required DSC modules
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
     Import-DscResource -ModuleName 'WebAdministrationDsc'
-    Import-DscResource -ModuleName 'PkiDsc' # For certificate management
+    Import-DscResource -ModuleName 'CertificateDsc' # UPDATED to use the supported module
 
     # 1. Ensure the target directory for the application exists
     File $InstallPath
@@ -71,13 +70,13 @@ Configuration OSLab_OneStreamIdentityServer
     }
 
     # 5. Create the self-signed certificate in the local machine's 'Personal' store
-    PkiSelfSignedCertificate 'CreateIdentityServerCert'
+    Certificate 'CreateIdentityServerCert' # UPDATED resource name
     {
-        Subject       = 'CN=localhost'
-        FriendlyName  = $CertificateFriendlyName
-        StoreLocation = 'Cert:\LocalMachine\My'
-        DnsName       = 'localhost'
-        Ensure        = $Ensure
+        Subject           = 'CN=localhost'
+        FriendlyName      = $CertificateFriendlyName
+        CertStoreLocation = 'Cert:\LocalMachine\My'
+        DnsName           = 'localhost'
+        Ensure            = $Ensure
     }
 
     # 6. Copy the certificate to the 'Trusted Root' store to avoid browser errors
@@ -102,7 +101,7 @@ Configuration OSLab_OneStreamIdentityServer
             $rootCert = Get-ChildItem Cert:\LocalMachine\Root | Where-Object { $_.Thumbprint -eq $cert.Thumbprint }
             return [bool]$rootCert
         }
-        DependsOn = '[PkiSelfSignedCertificate]CreateIdentityServerCert'
+        DependsOn = '[Certificate]CreateIdentityServerCert' # UPDATED dependency
     }
 
     # 7. Configure the HTTPS binding using the new certificate's thumbprint

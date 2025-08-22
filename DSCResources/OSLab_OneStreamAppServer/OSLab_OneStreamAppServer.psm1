@@ -2,21 +2,15 @@ Configuration OSLab_OneStreamAppServer
 {
     param
     (
-        [Parameter(Mandatory = $true)]
-        [string]$Version,
-
-        [Parameter(Mandatory = $true)]
-        [string]$SourcePath,
-
-        [Parameter(Mandatory = $true)]
-        [string]$InstallPath,
-
-        [Parameter(Mandatory = $true)]
-        [string]$ConnectionString,
-
-        [Parameter(Mandatory = $false)]
-        [ValidateSet("Present", "Absent")]
-        [string]$Ensure = "Present"
+        [Parameter(Mandatory)] [string]$Version,
+        [Parameter(Mandatory)] [string]$SourcePath,
+        [Parameter(Mandatory)] [string]$InstallPath,
+        [Parameter(Mandatory)] [string]$ConnectionString,
+        [string]$LicenseKeyPath = $null,
+        [hashtable]$AppSettings = $null,
+        [hashtable]$GatewayConfig = $null,
+        [string[]]$EnsureFolders = $null,
+        [Parameter(Mandatory = $false)] [ValidateSet("Present", "Absent")] [string]$Ensure = "Present"
     )
 
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
