@@ -1,0 +1,8 @@
+[ClassVersion("1.0.0.0"), FriendlyName("OSLab_WebServer")]
+class OSLab_WebServer : OMI_BaseResource
+{
+    [Key, Description("Specifies the name of the website.")] string WebsiteName;
+    [Required, Description("Specifies the physical path to the website content.")] string PhysicalPath;
+    [Required, Description("Specifies the port for the website.")] uint32 Port;
+    [Write, Description("Ensures the web server is present or absent.")] string Ensure;
+};

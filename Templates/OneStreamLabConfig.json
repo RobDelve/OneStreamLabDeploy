@@ -1,0 +1,102 @@
+{
+  "OneStream": {
+    "Version": "8.2.0",
+    "SourcePath": "C:\\Install\\OneStream\\OneStream_8.2.0.msi",
+    "InstallPath": "C:\\Program Files\\OneStream Software\\OneStream",
+    "LicenseKeyPath": "C:\\Install\\OneStream\\OneStreamLicense.lic",
+    "AppSettings": {
+      "setting1": "value1"
+    },
+    "GatewayConfig": {
+      "gatewayKey1": "gatewayValue1"
+    },
+    "EnsureFolders": [
+      "C:\\OneStream\\Data\\Archives",
+      "C:\\OneStream\\Data\\Logs"
+    ]
+  },
+  "IdentityServer": {
+    "ZipSourcePath": "C:\\Install\\OneStream\\OneStreamIS-app.zip",
+    "InstallPath": "C:\\Program Files\\OneStream Software\\XFIdentityServer",
+    "AppPoolName": "XFIdentityServer",
+    "HttpPort": 50005,
+    "HttpsPort": 50006,
+    "AppSettings": {
+      "ConnectionStrings": {
+        "IdentityServer": "fycys/5Inc6kla+n8CoFwG+Y3eyvsu4IJo/uh6GuRNb949KgaaN8XKl1rksKZajqEMzmb9GulUakJJxayFH5oHrZyskh6Cl6RDc47i44Z5UUdtyQ4jRiNgokYzb4BgjFmbstPquWzEPzuCChxoft2XC5/mbt6/E9tUTbCQSg6NNS2BeiHflUDpfL8mzKRzo+DI2AgxT13srZq9qng4GeZw=="
+      },
+      "Serilog": {
+        "MinimumLevel": {
+          "Default": "Information",
+          "Override": {
+            "Microsoft": "Warning",
+            "Microsoft.Hosting.Lifetime": "Information",
+            "System": "Information",
+            "Microsoft.AspNetCore.Authentication": "Information"
+          }
+        },
+        "WriteTo": [
+          {
+            "Name": "File",
+            "Args": {
+              "path": "G:/OSGES/Diagnostics/OneStreamIS/logs/log-.txt",
+              "rollingInterval": "Day"
+            }
+          }
+        ]
+      },
+      "SessionTimeoutInMinutes": "120",
+      "AllowedHosts": "*",
+      "Identity": {
+        "IssuerUri": "",
+        "LicenseKey": "<your JWT license key here>"
+      },
+      "SAML": {
+        "Licensee": "OneStream Software",
+        "LicenseKey": "<your SAML license key here>",
+        "LogSamlMessages": "false"
+      },
+      "XFAppServerStartupSettings": {
+        "ConfigurationFolder": "G:/OSGES/AppData/OneStreamShare/Config"
+      },
+      "XFEnvironmentSettings": {
+        "IsUsedWithWhiteListedIPOrVPN": "false",
+        "ClientEndpoints": "authorization_endpoint,end_session_endpoint",
+        "PublicBaseUrl": "https://localhost:50006/OneStreamIS",
+        "InternalBaseUrl": ""
+      },
+      "XFEmailConfiguration": {
+        "ForgotPasswordEmailConnectionName": "OneStreamEmail",
+        "PasswordResetTokenExpirationTimeInMinutes": "15"
+      },
+      "XFKeyVaultSettings": {
+        "SamlAdvancedSettingsKey": "F0BD86AA04E64FF58167588779744092"
+      }
+    }
+  },
+  "SqlServer": {
+    "InstanceName": "MSSQLSERVER",
+    "SourcePath": "C:\\Install\\SQLServer",
+    "Features": "SQLENGINE,SSMS",
+    "NativeUser": "OneStreamAdmin"
+  },
+  "DotNet": {
+    "Version": "6.0.24",
+    "SourcePath": "C:\\Install\\DotNet\\dotnet-hosting-6.0.24-win.exe"
+  },
+  "WindowsAccounts": {
+    "ServiceAccount": { "Name": "EduLabService" },
+    "DeveloperAccount": { "OriginalName": "Administrator", "NewName": "LabDeveloper" }
+  },
+  "OperatingSystem": {
+    "WallpaperPath": "C:\\Install\\Branding\\wallpaper.jpg",
+    "DefaultAppAssociationsPath": "C:\\Install\\Branding\\DefaultAppAssociations.xml",
+    "SplashScreenTaskPath": "C:\\Install\\Branding\\SplashScreen.exe",
+    "AutoLoadClientTaskPath": "C:\\Program Files\\OneStream Software\\OneStream Client\\OneStreamClient.exe",
+    "Culture": "en-GB",
+    "EnsureSshServer": true
+  },
+  "AdditionalSoftware": {
+    "Packages": [ "notepadplusplus", "7zip", "googlechrome", "microsoft-powershell" ]
+  }
+}

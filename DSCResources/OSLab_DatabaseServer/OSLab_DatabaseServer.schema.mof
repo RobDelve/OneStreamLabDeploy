@@ -1,0 +1,8 @@
+[ClassVersion("1.0.0.0"), FriendlyName("OSLab_DatabaseServer")]
+class OSLab_DatabaseServer : OMI_BaseResource
+{
+    [Key, Description("Specifies the SQL Server instance name.")] string InstanceName;
+    [Required, Description("Specifies the path to the SQL Server setup source files.")] string SourcePath;
+    [Required, Description("Specifies the features to install.")] string Features;
+    [Required, Description("Specifies the credential for the SQL Server service account.")] string SqlSvcAccount;
+};

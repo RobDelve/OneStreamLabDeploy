@@ -1,0 +1,9 @@
+[ClassVersion("1.0.0.0"), FriendlyName("OSLab_OneStreamAppServer")]
+class OSLab_OneStreamAppServer : OMI_BaseResource
+{
+    [Key, Description("Specifies the version of OneStream to install.")] string Version;
+    [Required, Description("Specifies the path to the OneStream installer.")] string SourcePath;
+    [Required, Description("Specifies the installation directory.")] string InstallPath;
+    [Required, Description("Specifies the database connection string.")] string ConnectionString;
+    [Write, Description("Ensures the OneStream application is present or absent.")] string Ensure;
+};
