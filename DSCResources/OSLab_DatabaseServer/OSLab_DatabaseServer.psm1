@@ -15,7 +15,7 @@ Configuration OSLab_DatabaseServer
         [PSCredential]$SqlSvcAccount
     )
 
-
+    Import-DscResource -ModuleName 'SqlServer'
 
     SqlSetup 'InstallDefaultInstance'
     {
